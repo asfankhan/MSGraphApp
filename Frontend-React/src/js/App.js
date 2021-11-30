@@ -53,6 +53,9 @@ const msalConfig = {
 };
 
 function App() {
+  ///////////////////////////////////////////////////////////////////
+  // Set Graph Call Type
+  let [serverURI, setServerURI] = useState("http://localhost:8000");
 
   const loginRequest = {
     scopes: ["User.Read"]
@@ -204,7 +207,28 @@ function App() {
   useEffect(() => {
     setMsalInstance(new PublicClientApplication(msalConfig)); 
   },[]);
-
+  ///////////////////////////////////////////////////////////////////
+  // Application Variables
+  let [clientId, setClientId] = useState("8a792f49-ae0d-4b9b-92d2-614fcba43bea");
+  let [clientSecret, setClientSecret] = useState("PHx7Q~l~OordXC3.Yf6UY1tv.9vyRtTdoHuhz");
+  let [authority, setAuthority] = useState("https://login.microsoftonline.com/common");
+  let GetGraphToken = async () => 
+  {
+    const requestOptions = {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ 
+        clientId : clientId,
+        clientSecret : clientSecret,
+        authority : authority
+       })
+    };
+    const response = await fetch(serverURI+'/GetCode', requestOptions)
+      .then(response => response.json())
+      // .then(data => console.log(data));
+      console.log(response)
+  }
   return (
     <div className="">
 
@@ -214,10 +238,14 @@ function App() {
         <div className="col-4 btn-group" role="group" aria-label="...">
           <button type="button" className="btn" onClick={changeGraph}>{graph}</button>
           <button type="button" className="btn" onClick={changeSignIn}>{account}</button>
-          <button type="button" className="btn" onClick={()=>console.log(getTokenPopup(loginRequest, accountInfo))} >Get {tokenAquired? "New": ""} Token</button>
+          <button type="button" className="btn" onClick={GetGraphToken} >Get {tokenAquired? "New": ""} Token</button>
         </div>
       </div>
-
+      <div className="nav row" >
+        <input className="col-4" value={clientId} onChange={e => setClientId(e.target.value)}/>
+        <input className="col-4" value={clientSecret} onChange={e => setClientSecret(e.target.value)}/>
+        <input className="col-4" value={authority} onChange={e => setAuthority(e.target.value)}/>
+      </div>
       <div className="row">
         {/* Graph Section */}
         <div className="col-8 row" style={{background: "#f4f4fa"}}>
