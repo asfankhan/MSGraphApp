@@ -8,6 +8,9 @@ var https = require('https');
 
 var jsonParser = bodyParser.json()
 
+const HTTP_SERVER_PORT = process.env.PORT || 80 ;
+const HTTPS_SERVER_PORT = process.env.PORT || 443;
+
 const SERVER_PORT = process.env.PORT || 8000;
 const REDIRECT_URI = "http://localhost:8000/redirect";
 
@@ -28,7 +31,8 @@ app.options('*', cors());
 
 // app.use(express.staticProvider(__dirname + '/build'));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname , '../Frontend-React/build/index.html'));
+    // res.sendFile(path.join(__dirname , '../Frontend-React/build/index.html'));
+    res.sendStatus(200);
 });
 
 app.get('/redirect', (req, res) => {
@@ -47,15 +51,12 @@ app.get('/redirect', (req, res) => {
         res.status(500).send(error);
     });
 });
-app.get('/GraphCall',jsonParser, (req, res) => {
-    console.log('Got body:', req.body);
-    res.sendStatus(200);
-});
+
 
 app.post('/GraphCall',jsonParser, (req, res) => {
     console.log('Got body:', req.body);
     res.sendStatus(200);
 });
 
-//httpServer.listen(8080);
-httpsServer.listen(SERVER_PORT, () => console.log(`Msal Node Auth Code Sample app listening on port ${SERVER_PORT}!`))
+httpServer.listen(HTTP_SERVER_PORT, () => console.log(`Http Server listening on ${HTTP_SERVER_PORT}!`))
+httpsServer.listen(HTTPS_SERVER_PORT, () => console.log(`Https Server listening on ${HTTPS_SERVER_PORT}!`))
