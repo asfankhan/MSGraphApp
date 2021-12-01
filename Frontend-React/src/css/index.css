@@ -25,13 +25,16 @@ code {
 .btn{
   color:aliceblue !important;
   box-shadow: none !important;
-  background: #444;
+  background: #555;
+  transition: .5s;
+
 }
 .btn:hover{
   color:aliceblue !important;
   color: red;
-  background: #565656;
-
+  background: #666;
+  font-weight: 600;
+  transition: .25s;
 }
 .btn:active{
   color:aliceblue !important;
